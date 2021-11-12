@@ -2,6 +2,7 @@ const connectMongo = require('./db');
 const { check, validationResult } = require('express-validator');
 const express = require('express');
 const cors = require('cors');
+const Loans = require('./models/Loan');
 
 const app = express();
 const port = 8000;
@@ -37,6 +38,8 @@ app.post('/add',
         //END - Return 400 status code in the response if request validation is failed
 
         const { serviceNumber, rank, fullName, department, itemName, itemSerialNumber, itemModel, dateOfIssue } = req.body;
+        const newAsset = { serviceNumber, rank, fullName, department, itemName, itemSerialNumber, itemModel, dateOfIssue };
+
         res.send(req.body);
     });
 
