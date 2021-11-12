@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
-const loansSchema = new Schema({
+const loanSchema = new Schema({
     serviceNumber: {
         type: String,
         required: true,
@@ -37,4 +37,4 @@ const loansSchema = new Schema({
     }
 });
 
-module.exports = mongoose.model('Loans', loansSchema);
+module.exports = mongoose.model('Loan', loanSchema);
