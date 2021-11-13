@@ -1,40 +1,32 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-const loanSchema = new Schema({
+const itemSchema = new Schema({
     serviceNumber: {
         type: String,
         required: true,
         unique: true,
     },
-    rank: {
+    name: {
         type: String,
         required: true,
     },
-    fullName: {
+    serialNumber: {
         type: String,
         required: true,
     },
-    department: {
-        type: String,
-        required: true,
-    },
-    itemName: {
-        type: String,
-        required: true,
-    },
-    itemSerialNumber: {
-        type: String,
-        required: true,
-    },
-    itemModel: {
+    model: {
         type: String,
         required: true,
     },
     dateOfIssue: {
         type: Date,
         required: true,
+    },
+    dataCreationDate: {
+        type: Date,
+        default: Date.now,
     }
 });
 
-module.exports = mongoose.model('loan', loanSchema);
+module.exports = mongoose.model('item', itemSchema);
