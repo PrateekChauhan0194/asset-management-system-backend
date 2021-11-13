@@ -12,7 +12,7 @@ app.use(cors());
 
 // Available routes
 app.use('/api/v1/borrower', require('./routes/borrower'));
-// app.use('/api/v1/item', require('./routes/item'));
+app.use('/api/v1/item', require('./routes/item'));
 
 // // Request to add data based on loanSchema
 // app.post('/add',

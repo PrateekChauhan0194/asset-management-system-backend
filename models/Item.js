@@ -5,7 +5,6 @@ const itemSchema = new Schema({
     serviceNumber: {
         type: String,
         required: true,
-        unique: true,
     },
     name: {
         type: String,
