@@ -67,7 +67,7 @@ router.post('/add', [
         let borrower = await Borrower.findOne({ serviceNumber });
 
         if (borrower) {
-            return res.status(400).json({ errors: [{ msg: 'Borrower already exists' }] });
+            return res.status(400).json({ errors: [{ msg: 'Loan card already exists' }] });
         }
 
         borrower = new Borrower({
