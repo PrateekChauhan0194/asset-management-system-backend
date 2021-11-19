@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
 const Borrower = require('../models/Borrower');
+const Item = require('../models/Item');
 
 // Route 1: Get all borrowers
 router.get('/getAll', async (req, res) => {
@@ -107,6 +108,11 @@ router.put('/update/:id', [
             return res.status(404).json({ errors: [{ msg: 'Borrower does not exist' }] });
         }
 
+        const item = await Item.findOne({ serviceNumber: borrower.serviceNumber });
+        if (item) {
+            return res.status(400).json({ errors: [{ msg: 'Unable to delete. Person has one or more loaned assets.' }] });
+        }
+
         borrower.serviceNumber = serviceNumber;
         borrower.rank = rank;
         borrower.fullName = fullName;
@@ -144,6 +150,11 @@ router.put('/updateByServiceNumber/:serviceNumber', [
             return res.status(404).json({ errors: [{ msg: 'Borrower does not exist' }] });
         }
 
+        const item = await Item.findOne({ serviceNumber: borrower.serviceNumber });
+        if (item) {
+            return res.status(400).json({ errors: [{ msg: 'Unable to delete. Person has one or more loaned assets.' }] });
+        }
+
         borrower.serviceNumber = serviceNumber;
         borrower.rank = rank;
         borrower.fullName = fullName;
@@ -167,9 +178,14 @@ router.delete('/delete/:id', async (req, res) => {
             return res.status(400).json({ errors: [{ msg: 'Borrower does not exist' }] });
         }
 
+        const item = await Item.findOne({ serviceNumber: borrower.serviceNumber });
+        if (item) {
+            return res.status(400).json({ errors: [{ msg: 'Person has one or more loaned assets.' }] });
+        }
+
         await Borrower.findByIdAndRemove(req.params.id);
 
-        res.json({ msg: 'Borrower deleted' });
+        res.json({ msg: 'Loan card deleted' });
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');
