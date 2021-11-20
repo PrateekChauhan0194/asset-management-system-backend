@@ -15,23 +15,6 @@ router.get('/getAll', async (req, res) => {
     }
 });
 
-// Route 2: Get a borrower by serviceNumber
-router.get('/getByServiceNumber/:serviceNumber', async (req, res) => {
-    try {
-        const borrower = await Borrower.findOne({ serviceNumber: req.params.serviceNumber });
-        if (!borrower) {
-            return res.status(404).json({ msg: 'Borrower not found' });
-        }
-        res.json(borrower);
-    } catch (err) {
-        console.error(err.message);
-        if (err.kind === 'ObjectId') {
-            return res.status(404).json({ msg: 'Borrower not found' });
-        }
-        res.status(500).send('Server Error');
-    }
-});
-
 // Route 3: Get a borrower by id
 router.get('/getById/:id', async (req, res) => {
     try {
@@ -48,7 +31,6 @@ router.get('/getById/:id', async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
-
 
 // Route 4: Add a borrower
 router.post('/add', [
@@ -114,54 +96,7 @@ router.put('/update/:id', [
         }
 
         borrower = await Borrower.findOne({ serviceNumber });
-        if (borrower) {
-            return res.status(400).json({ errors: [{ msg: 'Another borrower with same service number already exists.' }] });
-        }
-
-        borrower.serviceNumber = serviceNumber;
-        borrower.rank = rank;
-        borrower.fullName = fullName;
-        borrower.department = department;
-
-        await borrower.save();
-
-        res.json(borrower);
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server Error');
-    }
-});
-
-// Route 6: Update by serviceNumber
-router.put('/updateByServiceNumber/:serviceNumber', [
-    check('serviceNumber', 'Service Number is required').not().isEmpty(),
-    check('rank', 'Rank is required').not().isEmpty(),
-    check('fullName', 'Full Name is required').not().isEmpty(),
-    check('department', 'Department is required').not().isEmpty(),
-], async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-    }
-
-    const { serviceNumber, rank, fullName, department } = req.body;
-
-    const serviceNumberParam = req.params.serviceNumber;
-
-    try {
-        let borrower = await Borrower.findOne({ serviceNumber: serviceNumberParam });
-
-        if (!borrower) {
-            return res.status(404).json({ errors: [{ msg: 'Borrower does not exist' }] });
-        }
-
-        const item = await Item.findOne({ serviceNumber: borrower.serviceNumber });
-        if (item) {
-            return res.status(400).json({ errors: [{ msg: 'Unable to edit. Person has one or more loaned assets.' }] });
-        }
-
-        borrower = await Borrower.findOne({ serviceNumber });
-        if (borrower) {
+        if (borrower && borrower.id != req.params.id) {
             return res.status(400).json({ errors: [{ msg: 'Another borrower with same service number already exists.' }] });
         }
 
