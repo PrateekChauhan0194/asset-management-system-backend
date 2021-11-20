@@ -110,7 +110,7 @@ router.put('/update/:id', [
 
         const item = await Item.findOne({ serviceNumber: borrower.serviceNumber });
         if (item) {
-            return res.status(400).json({ errors: [{ msg: 'Unable to delete. Person has one or more loaned assets.' }] });
+            return res.status(400).json({ errors: [{ msg: 'Unable to edit. Person has one or more loaned assets.' }] });
         }
 
         borrower.serviceNumber = serviceNumber;
@@ -152,7 +152,7 @@ router.put('/updateByServiceNumber/:serviceNumber', [
 
         const item = await Item.findOne({ serviceNumber: borrower.serviceNumber });
         if (item) {
-            return res.status(400).json({ errors: [{ msg: 'Unable to delete. Person has one or more loaned assets.' }] });
+            return res.status(400).json({ errors: [{ msg: 'Unable to edit. Person has one or more loaned assets.' }] });
         }
 
         borrower.serviceNumber = serviceNumber;
@@ -180,7 +180,7 @@ router.delete('/delete/:id', async (req, res) => {
 
         const item = await Item.findOne({ serviceNumber: borrower.serviceNumber });
         if (item) {
-            return res.status(400).json({ errors: [{ msg: 'Person has one or more loaned assets.' }] });
+            return res.status(400).json({ errors: [{ msg: 'Unable to delete. Person has one or more loaned assets.' }] });
         }
 
         await Borrower.findByIdAndRemove(req.params.id);
