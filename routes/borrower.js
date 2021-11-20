@@ -102,7 +102,7 @@ router.put('/update/:id', [
     const { serviceNumber, rank, fullName, department } = req.body;
 
     try {
-        const borrower = await Borrower.findById(req.params.id);
+        let borrower = await Borrower.findById(req.params.id);
 
         if (!borrower) {
             return res.status(404).json({ errors: [{ msg: 'Borrower does not exist' }] });
@@ -111,6 +111,11 @@ router.put('/update/:id', [
         const item = await Item.findOne({ serviceNumber: borrower.serviceNumber });
         if (item) {
             return res.status(400).json({ errors: [{ msg: 'Unable to edit. Person has one or more loaned assets.' }] });
+        }
+
+        borrower = await Borrower.findOne({ serviceNumber });
+        if (borrower) {
+            return res.status(400).json({ errors: [{ msg: 'Another borrower with same service number already exists.' }] });
         }
 
         borrower.serviceNumber = serviceNumber;
@@ -144,7 +149,7 @@ router.put('/updateByServiceNumber/:serviceNumber', [
     const serviceNumberParam = req.params.serviceNumber;
 
     try {
-        const borrower = await Borrower.findOne({ serviceNumber: serviceNumberParam });
+        let borrower = await Borrower.findOne({ serviceNumber: serviceNumberParam });
 
         if (!borrower) {
             return res.status(404).json({ errors: [{ msg: 'Borrower does not exist' }] });
@@ -153,6 +158,11 @@ router.put('/updateByServiceNumber/:serviceNumber', [
         const item = await Item.findOne({ serviceNumber: borrower.serviceNumber });
         if (item) {
             return res.status(400).json({ errors: [{ msg: 'Unable to edit. Person has one or more loaned assets.' }] });
+        }
+
+        borrower = await Borrower.findOne({ serviceNumber });
+        if (borrower) {
+            return res.status(400).json({ errors: [{ msg: 'Another borrower with same service number already exists.' }] });
         }
 
         borrower.serviceNumber = serviceNumber;
