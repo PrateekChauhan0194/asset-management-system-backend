@@ -23,7 +23,17 @@ router.get('/getItems/:serviceNumber', async (req, res) => {
     }
 });
 
-// Route 3: Add new item
+// Route 3: Get item based on id
+router.get('/getItem/:id', async (req, res) => {
+    try {
+        const item = await Item.findById(req.params.id);
+        res.json(item);
+    } catch (err) {
+        res.status(500).json({ errors: [{ msg: err.message }] });
+    }
+});
+
+// Route 4: Add new item
 router.post('/addItem', [
     check('serviceNumber', 'Service number is required').not().isEmpty(),
     check('name', 'Name is required').not().isEmpty(),
@@ -70,7 +80,7 @@ router.post('/addItem', [
     }
 });
 
-// Route 4: Update item based on id
+// Route 5: Update item based on id
 router.put('/updateItem/:id', [
     check('serviceNumber', 'Service number is required').not().isEmpty(),
     check('name', 'Name is required').not().isEmpty(),
@@ -100,7 +110,7 @@ router.put('/updateItem/:id', [
     }
 });
 
-// Route 5: Delete item based on id
+// Route 6: Delete item based on id
 router.delete('/deleteItem/:id', async (req, res) => {
     try {
         const item = await Item.findById(req.params.id);
