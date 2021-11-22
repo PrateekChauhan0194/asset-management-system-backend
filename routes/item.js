@@ -9,7 +9,7 @@ router.get('/getAll', async (req, res) => {
         const items = await Item.find();
         res.json(items);
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ errors: [{ msg: err.message }] });
     }
 });
 
@@ -19,7 +19,7 @@ router.get('/getItems/:serviceNumber', async (req, res) => {
         const items = await Item.find({ serviceNumber: req.params.serviceNumber });
         res.json(items);
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ errors: [{ msg: err.message }] });
     }
 });
 
@@ -42,7 +42,7 @@ router.post('/addItem', [
         let item = await Item.findOne({ serviceNumber, name, serialNumber, model, gigNumber });
 
         if (item) {
-            return res.status(400).json({ message: 'Item already exists' });
+            return res.status(400).json({ errors: [{ msg: 'Item already exists' }] });
         }
 
         item = new Item({
@@ -56,7 +56,7 @@ router.post('/addItem', [
         await item.save();
         res.json(item);
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ errors: [{ msg: err.message }] });
     }
 });
 
@@ -74,7 +74,7 @@ router.put('/updateItem/:id', [
         let item = await Item.findById(req.params.id);
         console.log(item);
         if (!item) {
-            return res.status(404).json({ message: 'Item not found' });
+            return res.status(404).json({ errors: [{ msg: 'Item not found' }] });
         }
 
         item.serviceNumber = serviceNumber;
@@ -86,7 +86,7 @@ router.put('/updateItem/:id', [
         await item.save();
         res.json(item);
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ errors: [{ msg: err.message }] });
     }
 });
 
@@ -95,13 +95,13 @@ router.delete('/deleteItem/:id', async (req, res) => {
     try {
         const item = await Item.findById(req.params.id);
         if (!item) {
-            return res.status(404).json({ message: 'Item not found' });
+            return res.status(404).json({ errors: [{ msg: 'Item not found' }] });
         }
 
         await item.delete();
         res.json({ message: 'Item deleted' });
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ errors: [{ msg: err.message }] });
     }
 });
 
