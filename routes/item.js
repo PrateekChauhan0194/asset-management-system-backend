@@ -102,6 +102,7 @@ router.put('/updateItem/:id', [
         item.serialNumber = serialNumber;
         item.model = model;
         item.gigNumber = gigNumber;
+        item.dataCreationDate = Date.now();
 
         await item.save();
         res.json(item);
