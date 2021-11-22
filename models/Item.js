@@ -22,10 +22,6 @@ const itemSchema = new Schema({
         type: String,
         required: true,
     },
-    dateOfIssue: {
-        type: Date,
-        required: true,
-    },
     dataCreationDate: {
         type: Date,
         default: Date.now,
