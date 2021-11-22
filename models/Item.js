@@ -18,6 +18,10 @@ const itemSchema = new Schema({
         type: String,
         required: true,
     },
+    gigNumber: {
+        type: String,
+        required: true,
+    },
     dateOfIssue: {
         type: Date,
         required: true,
