@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
 const Item = require('../models/Item');
+const Borrower = require('../models/Borrower');
 
 // Route 1: Get all items
 router.get('/getAll', async (req, res) => {
@@ -92,9 +93,13 @@ router.put('/updateItem/:id', [
 
     try {
         let item = await Item.findById(req.params.id);
-        console.log(item);
         if (!item) {
             return res.status(404).json({ errors: [{ msg: 'Item not found' }] });
+        }
+
+        const borrower = await Borrower.findOne({ serviceNumber });
+        if (!borrower) {
+            return res.status(404).json({ errors: [{ msg: `Loan card not found` }] });
         }
 
         item.serviceNumber = serviceNumber;
