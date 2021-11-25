@@ -97,9 +97,11 @@ router.put('/updateItem/:id', [
             return res.status(404).json({ errors: [{ msg: 'Item not found' }] });
         }
 
-        const borrower = await Borrower.findOne({ serviceNumber });
-        if (!borrower) {
-            return res.status(404).json({ errors: [{ msg: `Loan card not found` }] });
+        if (serviceNumber !== 'inventory') {
+            const borrower = await Borrower.findOne({ serviceNumber });
+            if (!borrower) {
+                return res.status(404).json({ errors: [{ msg: `Loan card not found` }] });
+            }
         }
 
         item.serviceNumber = serviceNumber;
