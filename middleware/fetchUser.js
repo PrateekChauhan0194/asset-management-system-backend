@@ -5,7 +5,7 @@ const JWT_SECRET = require('../config').JWT_SECRET;
 const fetchUser = async (req, res, next) => {
     try {
         //Get user from JWT and add id to req obj
-        const token = req.header('auth-token');
+        const token = req.header('auth_token');
         const decoded = jwt.verify(token, JWT_SECRET);
         req.user = decoded.user;
         next();
