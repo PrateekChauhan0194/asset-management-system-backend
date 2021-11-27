@@ -9,7 +9,7 @@ const fetchUser = require('../middleware/fetchUser');
 
 // Route: Create user
 router.post('/signup', [
-    check('name', 'Name is required').not().isEmpty(),
+    check('username', 'Username is required').not().isEmpty(),
     check('password', 'Please enter a password with 6 or more characters').isLength({ min: 6 })
 ], async (req, res) => {
     const errors = validationResult(req);
@@ -17,10 +17,10 @@ router.post('/signup', [
         return res.status(400).json({ errors: errors.array() });
     }
 
-    const { name, password } = req.body;
+    const { username, password } = req.body;
 
     try {
-        let user = await User.findOne({ name });
+        let user = await User.findOne({ username });
 
         if (user) {
             return res.status(400).json({ msg: 'User already exists' });
@@ -32,7 +32,7 @@ router.post('/signup', [
         }
 
         user = new User({
-            name,
+            username,
             password
         });
 
@@ -64,7 +64,7 @@ router.post('/signup', [
 
 // Route: Login user
 router.post('/login', [
-    check('name', 'Name is required').not().isEmpty(),
+    check('username', 'Username is required').not().isEmpty(),
     check('password', 'Please enter a password').not().isEmpty()
 ], async (req, res) => {
     const errors = validationResult(req);
@@ -72,10 +72,10 @@ router.post('/login', [
         return res.status(400).json({ errors: errors.array() });
     }
 
-    const { name, password } = req.body;
+    const { username, password } = req.body;
 
     try {
-        let user = await User.findOne({ name });
+        let user = await User.findOne({ username });
 
         if (!user) {
             return res.status(404).json({ msg: 'User does not exist' });
