@@ -119,6 +119,21 @@ router.get('/', fetchUser, async (req, res) => {
     }
 });
 
+// Unauthenticated route: Check if at least one user exists
+router.get('/check', async (req, res) => {
+    try {
+        const user = await User.findOne();
+        if (user) {
+            res.json({ userExists: true });
+        } else {
+            res.json({ userExists: false });
+        }
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+});
+
 // Route: Change password
 router.post('/change-password', fetchUser, [
     check('password', 'Please enter a password with 6 or more characters').isLength({ min: 6 }),
