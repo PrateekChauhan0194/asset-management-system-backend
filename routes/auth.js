@@ -8,7 +8,7 @@ const User = require('../models/User');
 const fetchUser = require('../middleware/fetchUser');
 
 // Route: Create user
-router.post('/create', [
+router.post('/signup', [
     check('name', 'Name is required').not().isEmpty(),
     check('password', 'Please enter a password with 6 or more characters').isLength({ min: 6 })
 ], async (req, res) => {
