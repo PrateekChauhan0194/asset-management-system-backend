@@ -13,6 +13,7 @@ app.use(cors());
 // Available routes
 app.use('/api/v1/borrower', require('./routes/borrower'));
 app.use('/api/v1/item', require('./routes/item'));
+app.use('/api/v1/auth', require('./routes/auth'));
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
