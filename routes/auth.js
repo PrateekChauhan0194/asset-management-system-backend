@@ -151,7 +151,11 @@ router.post('/change-password', fetchUser, [
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            return res.status(401).json({ msg: 'Invalid credentials' });
+            return res.status(401).json({ error: 'Incorrect password' });
+        }
+
+        if (password === newPassword) {
+            return res.status(400).json({ error: 'New password must be different from old password' });
         }
 
         const salt = await bcrypt.genSalt(10);
