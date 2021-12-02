@@ -16,7 +16,7 @@ router.get('/getAll', fetchUser, async (req, res) => {
 });
 
 // Route 2: Get items based on serviceNumber
-router.get('/getItems/:serviceNumber', async (req, res) => {
+router.get('/getItems/:serviceNumber', fetchUser, async (req, res) => {
     try {
         const items = await Item.find({ serviceNumber: req.params.serviceNumber });
         res.json(items);
