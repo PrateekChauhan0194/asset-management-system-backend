@@ -3,9 +3,10 @@ const router = express.Router();
 const { check, validationResult } = require('express-validator');
 const Borrower = require('../models/Borrower');
 const Item = require('../models/Item');
+const fetchUser = require('../middleware/fetchUser');
 
 // Route 1: Get all borrowers
-router.get('/getAll', async (req, res) => {
+router.get('/getAll', fetchUser, async (req, res) => {
     try {
         const borrowers = await Borrower.find();
         res.json(borrowers);
