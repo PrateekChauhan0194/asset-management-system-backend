@@ -42,16 +42,17 @@ router.post('/addItem', [
     check('serialNumber', 'Serial number is required').not().isEmpty(),
     check('model', 'Model is required').not().isEmpty(),
     check('gigNumber', 'GIG number is required').not().isEmpty(),
+    check('issueDate', 'Issue date is required').not().isEmpty(),
 ], async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
 
-    const { serviceNumber, name, serialNumber, model, gigNumber } = req.body;
+    const { serviceNumber, name, serialNumber, model, gigNumber, issueDate } = req.body;
 
     try {
-        let item = await Item.findOne({ serviceNumber, name, serialNumber, model, gigNumber });
+        let item = await Item.findOne({ serviceNumber, name, serialNumber, model, gigNumber, issueDate });
 
         if (item) {
             return res.status(400).json({ errors: [{ msg: 'Item already exists' }] });
@@ -68,6 +69,7 @@ router.post('/addItem', [
             serialNumber,
             model,
             gigNumber,
+            issueDate,
         });
 
         await item.save();
@@ -84,8 +86,9 @@ router.put('/updateItem/:id', [
     check('serialNumber', 'Serial number is required').not().isEmpty(),
     check('model', 'Model is required').not().isEmpty(),
     check('gigNumber', 'GIG number is required').not().isEmpty(),
+    check('issueDate', 'Issue date is required').not().isEmpty(),
 ], async (req, res) => {
-    const { serviceNumber, name, serialNumber, model, gigNumber } = req.body;
+    const { serviceNumber, name, serialNumber, model, gigNumber, issueDate } = req.body;
 
     try {
         let item = await Item.findById(req.params.id);
@@ -105,6 +108,7 @@ router.put('/updateItem/:id', [
         item.serialNumber = serialNumber;
         item.model = model;
         item.gigNumber = gigNumber;
+        item.issueDate = issueDate;
         item.dataCreationDate = Date.now();
 
         await item.save();
