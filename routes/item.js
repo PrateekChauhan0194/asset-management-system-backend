@@ -62,11 +62,6 @@ router.post('/addItem', [
             return res.status(400).json({ errors: [{ msg: 'Item with this serial number already exists' }] });
         }
 
-        const itemByGigNumber = await Item.findOne({ gigNumber });
-        if (itemByGigNumber) {
-            return res.status(400).json({ errors: [{ msg: 'Item with this GIG number already exists' }] });
-        }
-
         item = new Item({
             serviceNumber,
             name,
