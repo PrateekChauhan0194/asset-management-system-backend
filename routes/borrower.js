@@ -91,10 +91,10 @@ router.put('/update/:id', [
             return res.status(404).json({ errors: [{ msg: 'Borrower does not exist' }] });
         }
 
-        const item = await Item.findOne({ serviceNumber: borrower.serviceNumber });
-        if (item) {
-            return res.status(400).json({ errors: [{ msg: 'Unable to edit. Person has one or more loaned assets.' }] });
-        }
+        // const item = await Item.findOne({ serviceNumber: borrower.serviceNumber });
+        // if (item) {
+        //     return res.status(400).json({ errors: [{ msg: 'Unable to edit. Person has one or more loaned assets.' }] });
+        // }
 
         const borrower2 = await Borrower.findOne({ serviceNumber });
         if (borrower2 && borrower2.id != req.params.id) {
