@@ -4,7 +4,12 @@
     "description": "Manage and track your loaned assets",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node index.js",
+        "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install npm && run build"
+    },
+    "engines": {
+        "node": "16.10.0"
     },
     "author": "",
     "license": "ISC",
