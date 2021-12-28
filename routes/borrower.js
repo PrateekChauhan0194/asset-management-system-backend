@@ -16,6 +16,23 @@ router.get('/getAll', fetchUser, async (req, res) => {
     }
 });
 
+// Route 2: Get a borrower by serviceNumber
+router.get('/getByServiceNumber/:serviceNumber', fetchUser, async (req, res) => {
+    try {
+        const borrower = await Borrower.findOne({ serviceNumber: req.params.serviceNumber });
+        if (!borrower) {
+            return res.status(404).json({ msg: 'Borrower not found' });
+        }
+        res.json(borrower);
+    } catch (err) {
+        console.error(err.message);
+        if (err.kind === 'ObjectId') {
+            return res.status(404).json({ msg: 'Borrower not found' });
+        }
+        res.status(500).send('Server Error');
+    }
+});
+
 // Route 3: Get a borrower by id
 router.get('/getById/:id', async (req, res) => {
     try {
