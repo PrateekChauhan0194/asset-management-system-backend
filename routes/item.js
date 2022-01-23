@@ -26,7 +26,7 @@ router.get('/getItems/:serviceNumber', fetchUser, async (req, res) => {
 });
 
 // Route 3: Get item based on serialNumber
-router.get('/getItem/:serialNumber', fetchUser, async (req, res) => {
+router.get('/getItemBySerialNumber/:serialNumber', fetchUser, async (req, res) => {
     try {
         const item = await Item.findOne({ serialNumber: req.params.serialNumber });
         res.json(item);
