@@ -106,6 +106,12 @@ router.put('/updateItem/:id', [
             return res.status(404).json({ errors: [{ msg: 'Item not found' }] });
         }
 
+        // Error if item with same serial number already exists
+        const itemBySerialNumber = await Item.findOne({ serialNumber });
+        if (itemBySerialNumber) {
+            return res.status(400).json({ errors: [{ msg: 'Item with this serial number already exists' }] });
+        }
+
         if (serviceNumber !== 'inventory') {
             const borrower = await Borrower.findOne({ serviceNumber });
             if (!borrower) {
