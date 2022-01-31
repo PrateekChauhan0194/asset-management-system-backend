@@ -108,7 +108,7 @@ router.put('/updateItem/:id', [
 
         // Error if item with same serial number already exists
         const itemBySerialNumber = await Item.findOne({ serialNumber });
-        if (itemBySerialNumber) {
+        if (itemBySerialNumber && itemBySerialNumber.id !== req.params.id) {
             return res.status(400).json({ errors: [{ msg: 'Item with this serial number already exists' }] });
         }
 
