@@ -134,7 +134,46 @@ router.put('/updateItem/:id', [
     }
 });
 
-// Route 7: Delete item based on id
+// Route 7: Issue item based on id
+router.put('/issueItem/:id', [
+    check('serviceNumber', 'Service number is required').not().isEmpty(),
+    check('name', 'Name is required').not().isEmpty(),
+    check('serialNumber', 'Serial number is required').not().isEmpty(),
+    check('model', 'Model is required').not().isEmpty(),
+    check('gigNumber', 'GIG number is required').not().isEmpty(),
+    check('issueDate', 'Issue date is required').not().isEmpty(),
+], async (req, res) => {
+    const { serviceNumber, name, serialNumber, model, gigNumber, issueDate } = req.body;
+
+    try {
+        let item = await Item.findById(req.params.id);
+        if (!item) {
+            return res.status(404).json({ errors: [{ msg: 'Item not found' }] });
+        }
+
+        if (serviceNumber !== 'inventory') {
+            const borrower = await Borrower.findOne({ serviceNumber });
+            if (!borrower) {
+                return res.status(404).json({ errors: [{ msg: `Loan card not found` }] });
+            }
+        }
+
+        item.serviceNumber = serviceNumber;
+        item.name = name;
+        item.serialNumber = serialNumber;
+        item.model = model;
+        item.gigNumber = gigNumber;
+        item.issueDate = issueDate;
+        item.dataCreationDate = Date.now();
+
+        await item.save();
+        res.json(item);
+    } catch (err) {
+        res.status(500).json({ errors: [{ msg: err.message }] });
+    }
+});
+
+// Route 8: Delete item based on id
 router.delete('/deleteItem/:id', async (req, res) => {
     try {
         const item = await Item.findById(req.params.id);
